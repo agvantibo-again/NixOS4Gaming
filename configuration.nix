@@ -27,7 +27,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Turn on ntsync
-  boot.initrd.kernelModules = [ "ntsync" ];
+  boot.initrd.kernelModules = [ "ntsync" ]; # Proton GE works with NTSYNC out of the box = better gaming performance with no effort
 
   networking.hostName = systemHostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -122,7 +122,7 @@
   programs.firefox.enable = true;
 
   # Allow unfree packages
-  # nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;   <--------- This is turned on in flake.nix
 
   # Enable Flatpak
   services.flatpak.enable = true;

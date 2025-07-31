@@ -5,10 +5,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    lanzaboote = {
+    lanzaboote = {                                    # Delete this line if you don't use Secure Boot
       url = "github:nix-community/lanzaboote/v0.4.2"; # Delete this line if you don't use Secure Boot
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+      inputs.nixpkgs.follows = "nixpkgs";             # Delete this line if you don't use Secure Boot
+    };                                                # Delete this line if you don't use Secure Boot
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest"; # Lets you handle flatpaks declaratively, thanks gmodena
 
     # Home Manager unstable branch
