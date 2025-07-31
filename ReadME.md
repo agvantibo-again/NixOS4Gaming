@@ -1,4 +1,4 @@
-# NixOS for Gaming and Production (for AMD).
+# NixOS for Gaming and Production (for AMD)
 
 These are my personal configuration files. I decided to share them in case other people want a jump-start for their own gaming machine. As I am new to NixOS, this might not be the most efficient code you have ever seen, but the set up works. Feel free to tweak it for your own use. Just install NixOS (I use the graphical installer) and then you can use these files. I use KDE so bear this in mind.
 **There are a few things to note before you dump them into your /etc/nixos folder though, so read these instructions and follow them carefully!**
@@ -68,7 +68,7 @@ I also suggest watching this video series by tony for general NixOS knowledge:
 - **How to use NixOS Home Manager:** https://youtu.be/bFmvnJVd5yQ?si=hrMM7zITolmTOT9P
 - **How to use NixOS Flakes:** https://youtu.be/v5RK3oNRiNY?si=uoFImHG31CWuZMbu
 
-- If you want a fully fledged install it and forget it operating system image on NixOS I suggest **GLF OS** although it is still in beta: https://www.gaminglinux.fr/glf-os/en/ 
+If you want a fully fledged install it and forget it operating system image on NixOS I suggest **GLF OS** although it is still in beta: https://www.gaminglinux.fr/glf-os/en/ 
 
 You can also use **Bazzite** if you want a batteries-included distribution with similar rollback and immutability features to NixOS (at least in practice, they are a very different implementation of immutability). You will not be left wanting and it is one of the most solid and ecompassing gaming distros out there. Every time I look at their project they added some killer features, for example, you can download the mesa-git drivers to a folder (mesa-git are the latest, bleeding edge drivers that have yet to be tested), and only have Steam games use them, while your system is still on the stable drivers. And you do that with one command line **ujust mesa-git**. Here is their website: https://bazzite.gg
 
