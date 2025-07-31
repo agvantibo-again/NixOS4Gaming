@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./modules/flatpak/flatpak-packages.nix        # <------- Let's you install flatpaks declaratively
-      ./modules/virtualization/virtualisation.nix   # <------- Virtualization with USB passthrough enabled and Virtual Machine Manager installed
+      ./modules/virtualisation/virtualisation.nix   # <------- Virtualization with USB passthrough enabled and Virtual Machine Manager installed
       # ./modules/disks/automount.nix               # <------- Edit the file and uncomment this line if you want your disks to automount
       # ./modules/security/systemd-hardening.nix      <------- Some security measures given that we are not using AppArmor or SElinux, uncomment to turn this on
       # ./modules/network/dns.nix                     <------- Can be activated if you want to change your DNS, please go to dns.nix to use your dns parameters, then uncomment this line

@@ -8,7 +8,7 @@
     options = [ "defaults" "nofail" "x-systemd.automount" ];
   };
 
-  fileSystems."/mnt/disk2" = {                                         # Change disk1 to the name of your disk
+  fileSystems."/mnt/disk2" = {                                         # Change disk2 to the name of your disk
     device = "/dev/disk/by-uuid/00000000-0000-0000-0000-000000000000"; # Change to your disk's UUID
     fsType = "btrfs";
     options = [ "defaults" "nofail" "x-systemd.automount" ];
