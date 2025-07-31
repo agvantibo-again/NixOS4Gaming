@@ -12,6 +12,8 @@
     DefaultTasksAccounting=yes
     DefaultLimitNOFILE=524288
     DefaultLimitNPROC=524288
+    PrivateTmp=yes
+    NoNewPrivileges=yes
   '';
 
   # Kernel Parameter Hardening (sysctl)
