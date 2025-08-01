@@ -36,8 +36,7 @@ For the latest packages, but be aware that there might be regressions as with al
 If you wish to manage software that doesn't need to be installed system-wide in a centralised manner. As well as your dotfiles.
 
 ### The Lanzaboote secure boot set up 
-I included sbctl, which is required to generate and sign your own keys: https://github.com/nix-community/lanzaboote
-Please DO NOT TURN ON SECURE BOOT until you generated and signed your keys as per the lanzaboote tutorial. See the link. Also please be aware that you require the systemd boot loader in order for Secure Boot to work. My configuration files should take care of that for you. If you don't use Secure Boot go to `flake.nix` and delete the lines related to lanzaboote and secure boot. I left comments in the file itself.
+I included sbctl, which is required to generate and sign your own keys. If you want to enable secure boot, please follow the tutorial in this link: https://github.com/nix-community/lanzaboote
 
 ### Systemd hardening
 I like layering security. As AppArmor and SElinux are not well supported by NixOS at the time of me writing this, the only other alternative is Systemd hardening. These are fairly permissive settings, but they are better than nothing. Systemd sandboxing can (and should) be applied to all services you'd like to contain. This is more of a general purpose set up to get you started. If you want to turn it on, uncomment `./modules/security/systemd-hardening.nix` in the `configuration.nix` file, inside the `imports` block.
