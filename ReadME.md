@@ -4,8 +4,7 @@ These are my personal configuration files. I decided to share them in case other
 **There are a few things to note before you dump them into your /etc/nixos folder though, so read these instructions and follow them carefully!**
 
 ## IMPORTANT: Change your username and hostname in the flake.nix file!
-The configuration will not work if you don't do this. I marked where you change them in the file itself.
-
+The configuration will not work if you don't do this. I marked where you change them in the file itself. Once you have done this and followed the instructions below, run the `sudo nixos-rebuild switch --upgrade` command as your system is not yet using flakes (it will be once these configurations files are active).
 
 ## What's Included
 
