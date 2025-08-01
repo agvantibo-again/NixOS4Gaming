@@ -4,19 +4,17 @@
 {
   # Systemd Manager Global Configuration (for accounting and limits)
   # systemd.enableUnifiedCgroupHierarchy is now implicitly true and removed
-  systemd.extraConfig = ''
-    DefaultCPUAccounting=yes
-    DefaultIOAccounting=yes
-    DefaultBlockIOAccounting=yes
-    DefaultMemoryAccounting=yes
-    DefaultTasksAccounting=yes
-    DefaultLimitNOFILE=524288
-    DefaultLimitNPROC=524288
-    PrivateTmp=yes
-    NoNewPrivileges=yes
-    PrivateTmp=yes
-    NoNewPrivileges=yes
-  '';
+  systemd.settings.Manager = {
+  DefaultCPUAccounting = "yes";
+  DefaultIOAccounting = "yes";
+  DefaultBlockIOAccounting = "yes";
+  DefaultMemoryAccounting = "yes";
+  DefaultTasksAccounting = "yes";
+  DefaultLimitNOFILE = "524288";
+  DefaultLimitNPROC = "524288";
+  PrivateTmp=yes
+  NoNewPrivileges=yes
+};
 
   # Kernel Parameter Hardening (sysctl)
   boot.kernel.sysctl = {
