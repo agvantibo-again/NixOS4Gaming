@@ -5,8 +5,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest"; # Lets you handle flatpaks declaratively, thanks gmodena
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     # Home Manager unstable branch
     home-manager = {
@@ -15,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-flatpak, home-manager, ...}@inputs:  # Delete lanzaboote in this list if you don't use Secure Boot
+  outputs = { self, nixpkgs, nix-flatpak, home-manager, ...}@inputs:
 
   let
     # Define your username here at the flake level
@@ -36,8 +35,9 @@
       };
       modules = [
         ./configuration.nix
-
         nix-flatpak.nixosModules.nix-flatpak
+
+        # Home Manager module
         home-manager.nixosModules.home-manager
       ];
 
