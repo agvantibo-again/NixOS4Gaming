@@ -5,10 +5,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    lanzaboote = {                                    # Delete this line if you don't use Secure Boot
-      url = "github:nix-community/lanzaboote/v0.4.2"; # Delete this line if you don't use Secure Boot
-      inputs.nixpkgs.follows = "nixpkgs";             # Delete this line if you don't use Secure Boot
-    };                                                # Delete this line if you don't use Secure Boot
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest"; # Lets you handle flatpaks declaratively, thanks gmodena
 
@@ -19,7 +15,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, lanzaboote, nix-flatpak, home-manager, ...}@inputs:  # Delete lanzaboote in this list if you don't use Secure Boot
+  outputs = { self, nixpkgs, nix-flatpak, home-manager, ...}@inputs:  # Delete lanzaboote in this list if you don't use Secure Boot
 
   let
     # Define your username here at the flake level
@@ -40,10 +36,6 @@
       };
       modules = [
         ./configuration.nix
-
-        # Enables secure boot, you still need to create and sign your own keys - please follow the lanzaboote tutorial BEFORE YOU ENABLE SECURE BOOT: https://github.com/nix-community/lanzaboote
-        lanzaboote.nixosModules.lanzaboote # Delete this line if you don't use Secure Boot
-        ./modules/security/secure-boot.nix # Delete this line and the corresponding file if you don't use Secure Boot
 
         nix-flatpak.nixosModules.nix-flatpak
         home-manager.nixosModules.home-manager
