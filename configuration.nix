@@ -39,6 +39,15 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Enable udevrules for OpenRGB
+  services.hardware.openrgb.enable = true;
+
+  # Allows to run programs that require FHS libraries
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+  # Add the missing libraries here
+  ];
+
   # Set your time zone.
   time.timeZone = "Europe/London";
 
@@ -122,7 +131,7 @@
   programs.firefox.enable = true;
 
   # Allow unfree packages
-  # nixpkgs.config.allowUnfree = true;   <--------- This is turned on in flake.nix
+  nixpkgs.config.allowUnfree = true;
 
   # Enable Flatpak
   services.flatpak.enable = true;
