@@ -17,8 +17,8 @@ These are my personal configuration files. I decided to share them in case other
 ### IMPORTANT: Change your username and hostname in flake.nix!
 The configuration will not work if you don't do this. I marked where you change them in the file itself:
 ```nix
-systemUsername = "your-username"; # Change from "xariann"
-systemHostname = "your-hostname"; # Change from "nixos" if desired
+systemUsername = "your-username"; # Change to your username
+systemHostname = "your-hostname"; # Change to your hostname
 ```
 
 ### First Build
