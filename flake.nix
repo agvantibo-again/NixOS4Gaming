@@ -5,7 +5,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     # Home Manager unstable branch
     home-manager = {
@@ -14,16 +19,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-flatpak, home-manager, ...}@inputs:
+  outputs = { self, nixpkgs, lanzaboote, nix-flatpak, home-manager, chaotic, stylix, ...}@inputs:
 
   let
     # Define your username here at the flake level
     # This is the single place to change it for this system
-    systemUsername = "your-username"; # <--- IMPORTANT: Change this line to your desired username
+    systemUsername = "username"; # <--- IMPORTANT: Change this line to your desired username
 
     # Define your hostname here at the flake level
     # This is the single place to change it for this system
-    systemHostname = "your-hostname"; # <--- IMPORTANT: Change this line to your desired hostname
+    systemHostname = "hostname"; # <--- IMPORTANT: Change this line to your desired hostname
   in
 
     {
@@ -32,7 +37,13 @@
 
       modules = [
         ./configuration.nix
+
+        # Secure boot files
+        ./modules/security/secure-boot.nix
+        lanzaboote.nixosModules.lanzaboote
+
         nix-flatpak.nixosModules.nix-flatpak
+        chaotic.nixosModules.default
 
         # Home Manager module
         home-manager.nixosModules.home-manager
@@ -40,7 +51,7 @@
 
       # Pass special arguments to your modules
       specialArgs = {
-        inherit inputs systemUsername systemHostname; # Make both available to modules
+        inherit inputs systemUsername systemHostname;
       };
     };
   };

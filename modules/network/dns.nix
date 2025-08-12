@@ -3,9 +3,10 @@
 {
   services.resolved.enable = true;
 
-  # services.resolved.extraConfig = ''          <---------- Uncomment
-  # p1.freedns.controld.com                     <---------- This is the ControlD's free malware dns, but you can change to your own
-  # DNSOverTLS=yes                              <---------- Uncomment (and/or change to your dns settings)
+  # Change details with your DNS
+  services.resolved.extraConfig = ''
+    DNS=
+    DNSOverTLS=yes
   '';
 
   networking.networkmanager.dns = lib.mkForce "systemd-resolved";

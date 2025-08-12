@@ -1,4 +1,4 @@
-# /etc/nixos/virtualisation/virtualisation.nix
+# /etc/nixos/virtualisation.nix
 { pkgs, systemUsername, ... }:
 
 {

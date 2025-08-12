@@ -14,6 +14,8 @@
     kdePackages.kate
     davinci-resolve
     mangohud
+    kdePackages.qtstyleplugin-kvantum
+    goverlay
   ];
 
   # Example: Manage a dotfile (e.g., ~/.config/nvim/init.vim)

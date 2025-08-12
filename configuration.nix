@@ -8,29 +8,35 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./modules/flatpak/flatpak-packages.nix        # <------- Let's you install flatpaks declaratively
-      ./modules/virtualisation/virtualisation.nix   # <------- Virtualization with USB passthrough enabled and Virtual Machine Manager installed
-      # ./modules/disks/automount.nix               # <------- Edit the file and uncomment this line if you want your disks to automount
-      # ./modules/security/systemd-hardening.nix      <------- Before you turn this on, rebuild the system once and update it. Then turn this on if you want some extra security features.
-      # ./modules/network/dns.nix                     <------- Can be activated if you want to change your DNS, please go to dns.nix to use your dns parameters, then uncomment this line
+      ./modules/disks/automount.nix
+      ./modules/flatpak/flatpak-packages.nix
+      ./modules/security/systemd-hardening.nix
+      # ./modules/network/dns.nix <-- optional module for custom dns
+      ./modules/virtualisation/virtualisation.nix
     ];
 
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Bootloader. Leave as is, don't change to grub or SECURE BOOT WON'T WORK AND YOU MIGHT NOT BE ABLE TO BOOT YOUR OPERATING SYSTEM.
+  # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # Use Cachy kernel.
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
 
   # Turn on ntsync
-  boot.initrd.kernelModules = [ "ntsync" ]; # Proton GE works with NTSYNC out of the box = better gaming performance with no effort
+  boot.initrd.kernelModules = [ "ntsync" ];
 
   networking.hostName = systemHostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  #Mesa-git via ChaoticNyx
+  chaotic.mesa-git.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -38,6 +44,9 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Enable updating of Secure Boot keys
+  services.fwupd.enable = true;
 
   # Enable udevrules for OpenRGB
   services.hardware.openrgb.enable = true;
@@ -76,12 +85,12 @@
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "gb";   # <------- Change to your layout
+    layout = "gb";
     variant = "";
   };
 
   # Configure console keymap
-  console.keyMap = "uk";  # <------- Change to your country
+  console.keyMap = "uk";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -125,6 +134,11 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   git
+  git-filter-repo
+  yadm
+  sbctl
+  fwupd
+  kdePackages.partitionmanager
   ];
 
   # Install firefox.
@@ -139,17 +153,17 @@
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
 
-  hardware.graphics = {             # Needed for Steam
-    enable = true;                  # Needed for Steam
-    enable32Bit = true;             # Needed for Steam and DaVinci Resolve
-    extraPackages = with pkgs; [    # Needed for Steam and DaVinci Resolve
-    rocmPackages.clr.icd            # Needed for Steam and DaVinci Resolve
-    ];                              # Needed for Steam and DaVinci Resolve
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+    rocmPackages.clr.icd
+    ];
   };
 
-  services.xserver.videoDrivers = ["amdgpu"]; # Needed for Steam
+  services.xserver.videoDrivers = ["amdgpu"];
 
-  # Garbage Collection - cleans up your generations/snapshots periodically and optimizes space usage
+  # Garbage Collection
   nix.gc = {
   automatic = true;
   dates = "daily"; # or "weekly", "monthly"

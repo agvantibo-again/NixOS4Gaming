@@ -43,6 +43,13 @@
     # NOT setting "kernel.unprivileged_userns_clone = 0;" to ensure Flatpak works.
   };
 
+  boot.blacklistedKernelModules = [
+  # Uncommon network protocols
+  "dccp" "sctp" "rds" "tipc"
+  # Rarely used filesystems (add only if you're sure you don't need them)
+  "cramfs" "freevxfs" "jffs2" "hfs" "hfsplus"
+];
+
   # Ensure firewall is enabled and default policy is reasonable
   networking.firewall.enable = true;
   # networking.firewall.allowedTCPPorts = [ 22 ]; # For SSH if needed
