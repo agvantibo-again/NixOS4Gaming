@@ -19,40 +19,50 @@
     };
   };
 
-  outputs = { self, nixpkgs, lanzaboote, nix-flatpak, home-manager, chaotic, stylix, ...}@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      lanzaboote,
+      nix-flatpak,
+      home-manager,
+      chaotic,
+      stylix,
+      ...
+    }@inputs:
 
-  let
-    # Define your username here at the flake level
-    # This is the single place to change it for this system
-    systemUsername = "username"; # <--- IMPORTANT: Change this line to your desired username
+    let
+      # Define your username here at the flake level
+      # This is the single place to change it for this system
+      systemUsername = "username"; # <--- IMPORTANT: Change this line to your desired username
 
-    # Define your hostname here at the flake level
-    # This is the single place to change it for this system
-    systemHostname = "hostname"; # <--- IMPORTANT: Change this line to your desired hostname
-  in
+      # Define your hostname here at the flake level
+      # This is the single place to change it for this system
+      systemHostname = "hostname"; # <--- IMPORTANT: Change this line to your desired hostname
+    in
 
     {
-    nixosConfigurations.${systemHostname} = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      nixosConfigurations.${systemHostname} = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
 
-      modules = [
-        ./configuration.nix
+        modules = [
+          ./configuration.nix
 
-        # Secure boot files
-        ./modules/security/secure-boot.nix
-        lanzaboote.nixosModules.lanzaboote
+          # Secure boot files
+          ./modules/security/secure-boot.nix
+          lanzaboote.nixosModules.lanzaboote
 
-        nix-flatpak.nixosModules.nix-flatpak
-        chaotic.nixosModules.default
+          nix-flatpak.nixosModules.nix-flatpak
+          chaotic.nixosModules.default
 
-        # Home Manager module
-        home-manager.nixosModules.home-manager
-      ];
+          # Home Manager module
+          home-manager.nixosModules.home-manager
+        ];
 
-      # Pass special arguments to your modules
-      specialArgs = {
-        inherit inputs systemUsername systemHostname;
+        # Pass special arguments to your modules
+        specialArgs = {
+          inherit inputs systemUsername systemHostname;
+        };
       };
     };
-  };
 }

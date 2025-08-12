@@ -1,18 +1,23 @@
 # /etc/nixos/modules/security/systemd-hardening.nix
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Systemd Manager Global Configuration (for accounting and limits)
   # systemd.enableUnifiedCgroupHierarchy is now implicitly true and removed
   systemd.settings.Manager = {
-   DefaultCPUAccounting = "yes";
-   DefaultIOAccounting = "yes";
-   DefaultBlockIOAccounting = "yes";
-   DefaultMemoryAccounting = "yes";
-   DefaultTasksAccounting = "yes";
-   DefaultLimitNOFILE = "524288";
-   DefaultLimitNPROC = "524288";
-};
+    DefaultCPUAccounting = "yes";
+    DefaultIOAccounting = "yes";
+    DefaultBlockIOAccounting = "yes";
+    DefaultMemoryAccounting = "yes";
+    DefaultTasksAccounting = "yes";
+    DefaultLimitNOFILE = "524288";
+    DefaultLimitNPROC = "524288";
+  };
 
   # Kernel Parameter Hardening (sysctl)
   boot.kernel.sysctl = {
@@ -44,11 +49,18 @@
   };
 
   boot.blacklistedKernelModules = [
-  # Uncommon network protocols
-  "dccp" "sctp" "rds" "tipc"
-  # Rarely used filesystems (add only if you're sure you don't need them)
-  "cramfs" "freevxfs" "jffs2" "hfs" "hfsplus"
-];
+    # Uncommon network protocols
+    "dccp"
+    "sctp"
+    "rds"
+    "tipc"
+    # Rarely used filesystems (add only if you're sure you don't need them)
+    "cramfs"
+    "freevxfs"
+    "jffs2"
+    "hfs"
+    "hfsplus"
+  ];
 
   # Ensure firewall is enabled and default policy is reasonable
   networking.firewall.enable = true;

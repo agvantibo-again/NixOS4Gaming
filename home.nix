@@ -1,5 +1,12 @@
 # /etc/nixos/home.nix
-{ config, pkgs, lib, systemUsername, systemHostname, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  systemUsername,
+  systemHostname,
+  ...
+}:
 
 {
   # Set your home.stateVersion. This is important for future Home Manager upgrades.

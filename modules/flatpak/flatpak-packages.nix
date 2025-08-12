@@ -3,7 +3,10 @@
 
 {
   services.flatpak.packages = [
-    { appId = "com.obsproject.Studio"; origin = "flathub"; }
+    {
+      appId = "com.obsproject.Studio";
+      origin = "flathub";
+    }
     "com.obsproject.Studio.Plugin.InputOverlay" # OBS addon
     "com.obsproject.Studio.Plugin.BackgroundRemoval" # OBS addon
     "com.github.tchx84.Flatseal"

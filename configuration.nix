@@ -2,20 +2,30 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, systemUsername, systemHostname, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  systemUsername,
+  systemHostname,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/disks/automount.nix
-      ./modules/flatpak/flatpak-packages.nix
-      # ./modules/network/dns.nix <-- optional module for custom dns
-      ./modules/virtualisation/virtualisation.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./modules/disks/automount.nix
+    ./modules/flatpak/flatpak-packages.nix
+    # ./modules/network/dns.nix <-- optional module for custom dns
+    ./modules/virtualisation/virtualisation.nix
+  ];
 
   # Enable flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
@@ -53,7 +63,7 @@
   # Allows to run programs that require FHS libraries
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
-  # Add the missing libraries here
+    # Add the missing libraries here
   ];
 
   # Set your time zone.
@@ -117,7 +127,10 @@
   users.users.${systemUsername} = {
     isNormalUser = true;
     description = "${systemUsername}";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
     ];
   };
@@ -127,17 +140,25 @@
   home-manager.useUserPackages = true;
 
   # This links your system user to your home.nix configuration
-  home-manager.users.${systemUsername} = import ./home.nix { inherit config pkgs lib systemUsername systemHostname; };
+  home-manager.users.${systemUsername} = import ./home.nix {
+    inherit
+      config
+      pkgs
+      lib
+      systemUsername
+      systemHostname
+      ;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  git
-  git-filter-repo
-  yadm
-  sbctl
-  fwupd
-  kdePackages.partitionmanager
+    git
+    git-filter-repo
+    yadm
+    sbctl
+    fwupd
+    kdePackages.partitionmanager
   ];
 
   # Install firefox.
@@ -156,17 +177,17 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-    rocmPackages.clr.icd
+      rocmPackages.clr.icd
     ];
   };
 
-  services.xserver.videoDrivers = ["amdgpu"];
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   # Garbage Collection
   nix.gc = {
-  automatic = true;
-  dates = "daily"; # or "weekly", "monthly"
-  options = "--delete-older-than 7d"; # Keep generations from the last 7 days
+    automatic = true;
+    dates = "daily"; # or "weekly", "monthly"
+    options = "--delete-older-than 7d"; # Keep generations from the last 7 days
   };
 
   # Some programs need SUID wrappers, can be configured further or are
