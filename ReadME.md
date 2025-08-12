@@ -29,11 +29,6 @@ Once you have installed NixOS via the graphical installer and dropped these file
 
 Note: The default hostname when you install is usually "nixos", but if you changed it during installation, make sure the `#your-hostname` part matches what you set.
 
-## What to Customize
-
-### Required Changes:
-- **Username and hostname** in `flake.nix` (see above)
-
 ## What's Included
 
 ### Gaming Packages
