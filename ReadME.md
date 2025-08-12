@@ -1,66 +1,108 @@
 # NixOS for Gaming and Production (for AMD)
 
-These are my personal configuration files. I decided to share them in case other people want a jump-start for their own gaming machine. As I am new to NixOS, this might not be the most efficient code you have ever seen, but the set up works. Feel free to tweak it for your own use. Just install NixOS (I use the graphical installer) and then you can use these files. I use KDE so bear this in mind.
-**There are a few things to note before you dump them into your /etc/nixos folder though, so read these instructions and follow them carefully!**
+These are my personal configuration files. I decided to share them in case other people want a jump-start for their own gaming machine. As I am new to NixOS, this might not be the most efficient code you have ever seen, but the setup works. Feel free to tweak it for your own use. I use KDE so bear this in mind.
 
-## IMPORTANT: Change your username and hostname in the flake.nix file!
-The configuration will not work if you don't do this. I marked where you change them in the file itself. Once you have done this and followed the instructions below, run the `sudo nixos-rebuild switch --upgrade` command as your system is not yet using flakes (it will be once these configurations files are active).
+## Quick Start
 
-Once you have installed NixOS via the graphical installer (from the NixOS website), you can drop these files in /etc/nixos/ 
-For the very first time, even though you dropped my files, your flake will not be enabled, so you will need to run a `nixos build-switch` command first to enable flakes. From then on you can use `nixos-rebuild switch --flake .#nixos` to rebuild with flake enabled. I believe that the default hostname when you install will be nixos, buf if not, you have to change the `#nixos` part to your hostname.
+1. Install NixOS using the graphical installer
+2. Clone/download these files to `/etc/nixos/`
+3. **IMPORTANT**: Edit `flake.nix` and change `systemUsername` and `systemHostname`
+4. Run: `sudo nixos-rebuild switch` (this enables flakes for the first time)
+5. From then on use: `nixos-rebuild switch --flake .#your-hostname`
+
+**There are a few things to customize before you use these files, so read the full instructions below!**
+
+## Initial Setup Instructions
+
+### IMPORTANT: Change your username and hostname in flake.nix!
+The configuration will not work if you don't do this. I marked where you change them in the file itself:
+```nix
+systemUsername = "your-username"; # Change from "xariann"
+systemHostname = "your-hostname"; # Change from "nixos" if desired
+```
+
+### First Build
+Once you have installed NixOS via the graphical installer and dropped these files in `/etc/nixos/`:
+
+1. **First time only**: `sudo nixos-rebuild switch` (this enables flakes since your system doesn't have them yet)
+2. **All subsequent builds**: `nixos-rebuild switch --flake .#your-hostname`
+
+Note: The default hostname when you install is usually "nixos", but if you changed it during installation, make sure the `#your-hostname` part matches what you set.
+
+## What to Customize
+
+### Required Changes:
+- **Username and hostname** in `flake.nix` (see above)
 
 ## What's Included
 
+### Gaming Packages
+**Steam** of course. I am using the native version here for ease of integration (not the Flatpak). Also **Proton Plus** so you can install your favourite custom Proton versions (for example Proton GE or Cachy Proton), **Lutris**, **MangoHud** (and **MangoJuice** to configure it), **Discord** (to chat to your friends while playing).
 
-### Gaming packages
-**Steam** of course. I am using the native version here to ease of integration (not the flapak). Also **Proton Plus** so you can install your favourite custom Proton versions (for example Proton GE or Cachy Proton), **Lutris**, **MangoHud** (and **MangoJuce** to configure it), **Discord** (to chat to your friends while playing).
+### Mesa-Git Drivers and the CachyOS Kernel
+These are installed via the Chaotic Nyx repo (enabled in the flake): https://github.com/chaotic-cx/nyx
 
-### Declarative Flatpak setup
-If you just enable flatpaks in NixOS you will have to install them as you would in any other distro, which is not a declarative way of doing it. However, thanks to gmodena we can install Flatpaks declaratively: https://github.com/gmodena/nix-flatpak
+### Declarative Flatpak Setup
+If you just enable Flatpaks in NixOS you will have to install them as you would in any other distro, which is not a declarative way of doing it. However, thanks to gmodena we can install Flatpaks declaratively: https://github.com/gmodena/nix-flatpak
 
-Why Flatpak? Sandboxing and proprietary software. I like to sandbox my browser and most internet-facing software. I didn't sandbox Steam for ease of integration with things such as MangoHud (your performance overlay). Other software uses Flatpak as their official means of distribution such as OBS. I also provided you with Flatseal so you can easily change flatpak permissions and Warehouse so you can snapshot and clean up old data. Blame the Universal Blue team for me liking Flatpak ;)
+Why Flatpak? Sandboxing and proprietary software. I like to sandbox my browser and most internet-facing software. I didn't sandbox Steam for ease of integration with things such as MangoHud (your performance overlay). Other software uses Flatpak as their official means of distribution such as OBS. I also provided you with Flatseal so you can easily change Flatpak permissions and Warehouse so you can snapshot and clean up old data. Blame the Universal Blue team for me liking Flatpak ;)
+
 Bear in mind that you can still install nix packages the normal way, the Flatpaks are an addition.
 
-### OBS and DaVinci-Resolve
+### OBS and DaVinci Resolve
 If you are a content creator who likes to share their gaming-related content.
 
-### Other packages
-Just have a look at the flatpak module and home-manager.
+### Other Packages
+Just have a look at the Flatpak module and home-manager configuration for the full list.
 
-## Other features
+## Other Features
 
-### Flake-enabled
+### Flake-Enabled
 So you can use flakes from other users.
 
-### Unstable channel
+### Unstable Channel
 For the latest packages, but be aware that there might be regressions as with all rolling releases.
 
 ### Home Manager
-If you wish to manage software that doesn't need to be installed system-wide in a centralised manner. As well as your dotfiles.
+If you wish to manage software that doesn't need to be installed system-wide in a centralized manner, as well as your dotfiles.
 
-### The Lanzaboote secure boot set up 
+### Lanzaboote Secure Boot Setup
 I included sbctl, which is required to generate and sign your own keys, and lanzaboote, which is required to enable secure boot. If you want to enable secure boot, please follow the tutorial in this link: https://github.com/nix-community/lanzaboote 
 
-If you don't want secure boot, then just delete the Lanzaboote references in the flake.nix and configuration.nix. Then go to the modules folder and delete "security".
+**If you don't want secure boot**, then delete the lanzaboote references in `flake.nix` and remove the import `./modules/security/secure-boot.nix` from `configuration.nix`. Then delete the `modules/security` folder.
 
-### A custom DNS configuration
-I use a DNS to have an extra line of defense against malware. You need to go to the configuration.nix file and uncomment `./modules/network/dns.nix` inside `imports` if you want to use a custom DNS. Then go to modiles > network dns.nix and update it with your dns information.
+### Custom DNS Configuration
+I use a custom DNS to have an extra line of defense against malware. You need to go to the `configuration.nix` file and uncomment `./modules/network/dns.nix` inside `imports` if you want to use a custom DNS. Then go to `modules/network/dns.nix` and update it with your DNS information.
 
-### Automount template
-This should be disk agnostic, if you don't want automount, delete the import in configuration.nix as well as the disks folder inside modules.
+### Automount Template
+This should be disk agnostic and will handle mounting drives automatically. If you don't want automount, delete the import in `configuration.nix` as well as the `modules/disks` folder.
 
-### Virtualization turned on and Virtual Machine Manager
+### Virtualization and Virtual Machine Manager
 If you want to try other distros or you need to access Windows to update those pesky peripherals that cannot be updated on Linux, this will have you covered. When you first start Virtual Machine Manager it might tell you you do not have a connection. Just go to **File > Add Connection**, then you should be ready to install your virtual machine.
 
-### Rebuild NixOS.desktop and Update NixOS.desktop
-While you can create aliases so you could just do it all in terminal, if you are a GUI type-of person I made these two desktop icons so you can update and rebuild your system without having to retype the command every time. Just place them on your desktop and/or in `/home/.local/share/applications` if you want them to also show up in your application menu. Rebuild is for when you make changes to your configuration. Update will update your packages and also rebuild.
+### Desktop Files for Easy Updates
+While you can create aliases so you could just do it all in terminal, if you are a GUI type of person I made these two desktop icons so you can update and rebuild your system without having to retype the command every time. Just place them on your desktop and/or in `/home/.local/share/applications` if you want them to also show up in your application menu. Rebuild is for when you make changes to your configuration. Update will update your packages and also rebuild.
 
-## That's it folks!
-As I said at the beginning these are just my own configuraton files which I modified for other people's use. I tried to leave comments where action would be necessary to turn features on or off. 
+## Troubleshooting
+
+### Common Issues:
+- **Flake errors**: Make sure you've changed the username and hostname in `flake.nix`
+- **GPU issues**: This config is AMD-specific. For NVIDIA, you'll need to modify the graphics configuration
+- **Build failures**: Try `sudo nixos-rebuild switch --flake .#your-hostname --show-trace` for more detailed error messages
+
+### Disabling Features You Don't Want:
+- **Secure boot**: Remove lanzaboote imports and delete `modules/security`
+- **Flatpaks**: Remove the nix-flatpak import from `flake.nix` and the flatpak import from `configuration.nix`
+- **Gaming packages**: Comment out Steam and gaming-related packages in `configuration.nix`
+- **Virtualization**: Remove the virtualization import from `configuration.nix`
+
+## That's It Folks!
+
+As I said at the beginning these are just my own configuration files which I modified for other people's use. I tried to leave comments where action would be necessary to turn features on or off. 
 
 I don't pretend to know enough to be able to help with troubleshooting, but hopefully this video by Vimjoyer **Is NixOS The Best Gaming Distro** might help (he also has instructions for Nvidia): https://www.youtube.com/watch?v=qlfm3MEbqYA
 
-His channel is probably one of the best NixOS Channels around.
+His channel is probably one of the best NixOS channels around.
 
 I also suggest watching this video series by tony for general NixOS knowledge:
 
@@ -68,11 +110,12 @@ I also suggest watching this video series by tony for general NixOS knowledge:
 - **How to use NixOS Home Manager:** https://youtu.be/bFmvnJVd5yQ?si=hrMM7zITolmTOT9P
 - **How to use NixOS Flakes:** https://youtu.be/v5RK3oNRiNY?si=uoFImHG31CWuZMbu
 
-If you want a fully fledged install it and forget it operating system image on NixOS I suggest **GLF OS** although it is still in beta: https://www.gaminglinux.fr/glf-os/en/ 
+## Alternatives
 
-You can also use **Bazzite** if you want a batteries-included distribution with similar rollback and immutability features to NixOS (at least in practice, they are a very different implementation of immutability). You will not be left wanting and it is one of the most solid and ecompassing gaming distros out there. Every time I look at their project they added some killer features, for example, you can download the mesa-git drivers to a folder (mesa-git are the latest, bleeding edge drivers that have yet to be tested), and only have Steam games use them, while your system is still on the stable drivers. And you do that with one command line **ujust mesa-git**. My own NixOS configuration took a lot of inspiration from that project. Here is their website: https://bazzite.gg
+If you want a fully fledged install-it-and-forget-it operating system image on NixOS I suggest **GLF OS** although it is still in beta: https://www.gaminglinux.fr/glf-os/en/ 
+
+You can also use **Bazzite** if you want a batteries-included distribution with similar rollback and immutability features to NixOS (at least in practice, they are a very different implementation of immutability). You will not be left wanting and it is one of the most solid and encompassing gaming distros out there. Every time I look at their project they added some killer features, for example, you can download the mesa-git drivers to a folder (mesa-git are the latest, bleeding edge drivers that have yet to be tested), and only have Steam games use them, while your system is still on the stable drivers. And you do that with one command line **ujust mesa-git**. My own NixOS configuration took a lot of inspiration from that project. Here is their website: https://bazzite.gg
 
 If you like Arch (btw) then there are CachyOS or Garuda.
 
 These are just a few of the gaming distros out there, and they are all ready-to-go and easy to use. They are all an easier starting point than my configuration files.
-
