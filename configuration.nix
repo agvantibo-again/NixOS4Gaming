@@ -160,8 +160,6 @@
     ];
   };
 
-  services.xserver.videoDrivers = ["amdgpu"];
-
   # Garbage Collection
   nix.gc = {
   automatic = true;
