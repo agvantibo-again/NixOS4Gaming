@@ -44,7 +44,7 @@ I included sbctl, which is required to generate and sign your own keys, and lanz
 If you don't want secure boot, then just delete the Lanzaboote references in the flake.nix and configuration.nix. Then go to the modules folder and delete "security".
 
 ### A custom DNS configuration
-I use a DNS to have an extra line of defense against malware. In these files I set up the free malware filtering dns by ControlD, but you can choose another one. You also need to go to the configuration.nix file and uncomment `./modules/network/dns.nix` inside `imports` if you want to use a custom DNS. 
+I use a DNS to have an extra line of defense against malware. You need to go to the configuration.nix file and uncomment `./modules/network/dns.nix` inside `imports` if you want to use a custom DNS. Then go to modiles > network dns.nix and update it with your dns information.
 
 ### Automount template
 This should be disk agnostic, if you don't want automount, delete the import in configuration.nix as well as the disks folder inside modules.
