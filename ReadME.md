@@ -6,6 +6,9 @@ These are my personal configuration files. I decided to share them in case other
 ## IMPORTANT: Change your username and hostname in the flake.nix file!
 The configuration will not work if you don't do this. I marked where you change them in the file itself. Once you have done this and followed the instructions below, run the `sudo nixos-rebuild switch --upgrade` command as your system is not yet using flakes (it will be once these configurations files are active).
 
+Once you have installed NixOS via the graphical installer (from the NixOS website), you can drop these files in /etc/nixos/ 
+For the very first time, even though you dropped my files, your flake will not be enabled, so you will need to run a `nixos build-switch` command first to enable flakes. From then on you can use `nixos-rebuild switch --flake .#nixos` to rebuild with flake enabled. I believe that the default hostname when you install will be nixos, buf if not, you have to change the `#nixos` part to your hostname.
+
 ## What's Included
 
 
@@ -36,16 +39,15 @@ For the latest packages, but be aware that there might be regressions as with al
 If you wish to manage software that doesn't need to be installed system-wide in a centralised manner. As well as your dotfiles.
 
 ### The Lanzaboote secure boot set up 
-I included sbctl, which is required to generate and sign your own keys. If you want to enable secure boot, please follow the tutorial in this link: https://github.com/nix-community/lanzaboote
+I included sbctl, which is required to generate and sign your own keys, and lanzaboote, which is required to enable secure boot. If you want to enable secure boot, please follow the tutorial in this link: https://github.com/nix-community/lanzaboote 
 
-### Systemd hardening
-I like layering security. As AppArmor and SElinux are not well supported by NixOS at the time of me writing this, the only other alternative is Systemd hardening. These are fairly permissive settings, but they are better than nothing. Systemd sandboxing can (and should) be applied to all services you'd like to contain. This is more of a general purpose set up to get you started. If you want to turn it on, uncomment `./modules/security/systemd-hardening.nix` in the `configuration.nix` file, inside the `imports` block.
+If you don't want secure boot, then just delete the Lanzaboote references in the flake.nix and configuration.nix. Then go to the modules folder and delete "security".
 
 ### A custom DNS configuration
 I use a DNS to have an extra line of defense against malware. In these files I set up the free malware filtering dns by ControlD, but you can choose another one. You also need to go to the configuration.nix file and uncomment `./modules/network/dns.nix` inside `imports` if you want to use a custom DNS. 
 
 ### Automount template
-If you want to have automounting disks uncomment `./modules/disks/automount.nix` in the `configuraiton.nix` file and edit the automount.nix as instructed in the file's comments.
+This should be disk agnostic, if you don't want automount, delete the import in configuration.nix as well as the disks folder inside modules.
 
 ### Virtualization turned on and Virtual Machine Manager
 If you want to try other distros or you need to access Windows to update those pesky peripherals that cannot be updated on Linux, this will have you covered. When you first start Virtual Machine Manager it might tell you you do not have a connection. Just go to **File > Add Connection**, then you should be ready to install your virtual machine.
