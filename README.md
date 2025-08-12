@@ -70,7 +70,40 @@ I included sbctl, which is required to generate and sign your own keys, and lanz
 I use a custom DNS to have an extra line of defense against malware. You need to go to the `configuration.nix` file and uncomment `./modules/network/dns.nix` inside `imports` if you want to use a custom DNS. Then go to `modules/network/dns.nix` and update it with your DNS information.
 
 ### Automount Template
-This should be disk agnostic and will handle mounting drives automatically. If you don't want automount, delete the import in `configuration.nix` as well as the `modules/disks` folder.
+This should be disk agnostic and will handle mounting drives automatically. If you don't want automount, delete the import in `configuration.nix` as well as the `modules/disks` folder. 
+
+**Current behavior**: Mounts disks when you click on them the first time (without asking for a password).
+
+**For immediate mounting at boot** (useful for Steam game libraries), you need to specify your drives explicitly. Replace the automount.nix file with something like this:
+
+### Automount Template
+This should be disk agnostic and will handle mounting drives automatically. If you don't want automount, delete the import in `configuration.nix` as well as the `modules/disks` folder. 
+
+**Current behavior**: Mounts disks when you click on them the first time (without asking for a password).
+
+**For immediate mounting at boot** (useful for Steam game libraries), you need to specify your drives explicitly. Replace the automount.nix file with something like this:
+
+# /etc/nixos/modules/disks/automount.nix
+{ config, pkgs, ... }:
+{
+  fileSystems."/mnt/games" = {  # Choose your mount point
+    device = "/dev/disk/by-uuid/your-uuid-here";  # Find with: lsblk -f
+    fsType = "ext4";  # Change to your filesystem (ext4, btrfs, ntfs, etc.)
+    options = [ "defaults" "nofail" ];
+  };
+  
+  # Polkit rule to allow users in 'wheel' group to mount internal drives without password
+  environment.etc."polkit-1/rules.d/90-local-mount.rules".text = ''
+    polkit.addRule(function(action, subject) {
+        if (action.id == "org.freedesktop.udisks2.filesystem-mount-system" &&
+            subject.isInGroup("wheel")) {
+            return polkit.Result.YES;
+        }
+    });
+  '';
+}
+
+To find your disk UUID: Run `lsblk -f` to see all your drives and their UUIDs.
 
 ### Virtualization and Virtual Machine Manager
 If you want to try other distros or you need to access Windows to update those pesky peripherals that cannot be updated on Linux, this will have you covered. When you first start Virtual Machine Manager it might tell you you do not have a connection. Just go to **File > Add Connection**, then you should be ready to install your virtual machine.
