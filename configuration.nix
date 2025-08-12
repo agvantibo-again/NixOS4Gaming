@@ -10,7 +10,6 @@
       ./hardware-configuration.nix
       ./modules/disks/automount.nix
       ./modules/flatpak/flatpak-packages.nix
-      ./modules/security/systemd-hardening.nix
       # ./modules/network/dns.nix <-- optional module for custom dns
       ./modules/virtualisation/virtualisation.nix
     ];
