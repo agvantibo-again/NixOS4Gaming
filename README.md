@@ -76,13 +76,6 @@ This should be disk agnostic and will handle mounting drives automatically. If y
 
 **For immediate mounting at boot** (useful for Steam game libraries), you need to specify your drives explicitly. Replace the automount.nix file with something like this:
 
-### Automount Template
-This should be disk agnostic and will handle mounting drives automatically. If you don't want automount, delete the import in `configuration.nix` as well as the `modules/disks` folder. 
-
-**Current behavior**: Mounts disks when you click on them the first time (without asking for a password).
-
-**For immediate mounting at boot** (useful for Steam game libraries), you need to specify your drives explicitly. Replace the automount.nix file with something like this:
-
 ```nix
 # /etc/nixos/modules/disks/automount.nix
 { config, pkgs, ... }:
