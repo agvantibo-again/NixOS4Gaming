@@ -83,6 +83,7 @@ This should be disk agnostic and will handle mounting drives automatically. If y
 
 **For immediate mounting at boot** (useful for Steam game libraries), you need to specify your drives explicitly. Replace the automount.nix file with something like this:
 
+```nix
 # /etc/nixos/modules/disks/automount.nix
 { config, pkgs, ... }:
 {
@@ -102,6 +103,7 @@ This should be disk agnostic and will handle mounting drives automatically. If y
     });
   '';
 }
+```
 
 To find your disk UUID: Run `lsblk -f` to see all your drives and their UUIDs.
 
